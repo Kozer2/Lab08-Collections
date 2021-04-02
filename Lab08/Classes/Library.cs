@@ -9,31 +9,47 @@ namespace Lab08_Collections.Classes
 {
     public class Library : ILibrary
     {
-        public int Count => throw new NotImplementedException();
+        private Dictionary<string, Book> dictionary = new Dictionary<string, Book>();
+        public int Count { get; private set; }
 
-        public void Add(string title, string firstName, string lastName, int numberOfPages)
+       
+
+        public void Add(string title, string firstName, string lastName, int Pages)
         {
-            throw new NotImplementedException();
+            Book newBook = new Book(title, firstName, lastName, Pages);
+            dictionary.Add(title, newBook);
+            Count++;
         }
 
         public Book Borrow(string title)
         {
-            throw new NotImplementedException();
+            Book book;
+            bool containsBook = dictionary.TryGetValue(title, out book);
+            if (containsBook)
+            {
+                dictionary.Remove(title);
+                Count--;
+            }
+            return book;
         }
 
         public IEnumerator<Book> GetEnumerator()
         {
-            throw new NotImplementedException();
+            foreach (Book book in dictionary.Values)
+            {
+                yield return book;
+            };
         }
 
         public void Return(Book book)
         {
-            throw new NotImplementedException();
+            dictionary.Add(book.Title, book);
+            Count++;
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            throw new NotImplementedException();
+            return GetEnumerator();
         }
     }
 }
